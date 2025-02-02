@@ -1,0 +1,104 @@
+/* Fuente y Reset */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Estilos Generales */
+body {
+    background-color: #121212;
+    color: #fff;
+    text-align: center;
+}
+
+/* Encabezado */
+header {
+    background: linear-gradient(to right, #1a1a1a, #333);
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.5);
+}
+header h1 {
+    font-size: 2.5rem;
+    color: #FFD700;
+}
+header p {
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+/* Contenedor Principal */
+.container {
+    width: 80%;
+    margin: 30px auto;
+    padding: 20px;
+    background: #1f1f1f;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+label {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+input, select {
+    width: 80%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #FFD700;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #222;
+    color: white;
+}
+button {
+    background: #FFD700;
+    color: #000;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+button:hover {
+    background: #ffcc00;
+}
+
+/* Tabla de Reservas */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border-bottom: 2px solid #FFD700;
+}
+th {
+    background: #333;
+    color: #FFD700;
+}
+td {
+    background: #222;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    background: #1a1a1a;
+    color: #FFD700;
+    font-size: 1rem;
+}
