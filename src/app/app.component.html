@@ -9,7 +9,7 @@
 <body>
     <!-- Contenedor del menú superior derecho -->
     <div class="nav-container">
-        <a href="https://portafolio-de-evidencias-parcial1.netlify.app/" class="home-btn">
+        <a href="/" class="home-btn">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Home">
         </a>
         
@@ -61,7 +61,7 @@
 
                 <p>Total a pagar: <strong>{{ total | currency }}</strong></p>
 
-                <button type="submit" [disabled]="formReserva.invalid">Reservar</button>
+                <button type="submit" [disabled]="formReserva.invalid" class="btn-white">Reservar</button>
             </form>
 
             <h2>Reservas Realizadas</h2>
@@ -84,9 +84,9 @@
                         <td>{{ reserva.dias }}</td>
                         <td>{{ reserva.total | currency }}</td>
                         <td>
-                            <button (click)="editarReserva(reserva)">Editar</button> 
+                            <button (click)="editarReserva(reserva)" class="btn-white">Editar</button>
                             .
-                            <button (click)="eliminarReserva(i)">Eliminar</button>
+                            <button (click)="eliminarReserva(i)" class="btn-white">Eliminar</button>
                         </td>
                     </tr>
                 </tbody>
@@ -122,6 +122,27 @@
             border-radius: 5px;
             border: 1px solid #ccc;
             cursor: pointer;
+        }
+
+        /* Estilo para los botones blancos */
+        .btn-white {
+            background-color: white;
+            color: black;
+            border: 2px solid #ccc;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-white:hover {
+            background-color: #f0f0f0;
+        }
+
+        .btn-white:disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
         }
     </style>
 </body>
