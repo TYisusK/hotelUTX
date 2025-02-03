@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Contenedor del menú superior derecho -->
+    <div class="nav-container">
+        <a href="/" class="home-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Home">
+        </a>
+        
+        <!-- Menú desplegable con select -->
+        <select class="menu-select" onchange="location = this.value;">
+            <option value="" selected disabled>Menú</option>
+            <option value="https://fundamentos-ejemmplo1.netlify.app/">Ejemplo 1</option>
+            <option value="https://ejemplo2dados.netlify.app/">Ejemplo 2</option>
+            <option value="https://ejemplo3productos.netlify.app/">Ejemplo 3</option>
+            <option value="https://ejemplo4formularioreact.netlify.app/">Ejemplo 4</option>
+            <option value="https://ejemplo5formularioreactivo.netlify.app/">Ejemplo 5</option>
+            <option value="https://hotelutx-parcial1.netlify.app/">Proyecto</option>
+        </select>
+    </div>
+
     <header>
         <h1>Hotel UTX</h1>
         <p>Lujo y comodidad en cada estancia</p>
@@ -68,8 +86,6 @@
                         <td>
                             <button (click)="editarReserva(reserva)">Editar</button> 
                             .
-                      
-
                             <button (click)="eliminarReserva(i)">Eliminar</button>
                         </td>
                     </tr>
@@ -81,5 +97,32 @@
     <footer>
         <p>&copy; 2024 Hotel UTX - Exclusividad y confort</p>
     </footer>
+
+    <!-- Estilos -->
+    <style>
+        .nav-container {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .home-btn img {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .menu-select {
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+    </style>
 </body>
 </html>
