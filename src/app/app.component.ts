@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';  // Necesario para usar formularios reactivos
-import { NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Reserva } from './models/reserva.model';
+import { ReservaService } from './services/reserva.service';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  standalone: true,  // Esto indica que el componente es independiente (standalone)
-  imports: [ReactiveFormsModule, CommonModule]  // Importa los módulos necesarios aquí
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule]
 })
-export class AppComponent {
-  reservas: Array<{ nombre: string; edad: string; email: string; telefono: string; habitacion: string; dias: string; total: number }> = [];
+export class AppComponent implements OnInit {
+  reservas: Reserva[] = [];
   total = 0;
   
   habitaciones = [
@@ -22,7 +24,7 @@ export class AppComponent {
     { tipo: 'Familiar', precio: 1500 }
   ];
 
-  reservaEditando: number | null = null;  // Esta variable guardará el índice de la reserva que estamos editando
+  reservaEditando: Reserva | null = null;
 
   formReserva = new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -33,56 +35,79 @@ export class AppComponent {
     dias: new FormControl('', [Validators.required, Validators.min(1)]),
   });
 
+  constructor(private reservaService: ReservaService) {}
+
+  async ngOnInit() {
+    await this.getReservas();
+  }
+
+  // Obtener las reservas desde Firebase
+  async getReservas() {
+    this.reservas = await firstValueFrom(this.reservaService.getReservas());
+  }
+
+  // Calcular el total de la reserva
   calcularTotal() {
     const habitacionSeleccionada = this.habitaciones.find(h => h.tipo === this.formReserva.value.habitacion);
     if (habitacionSeleccionada) {
-      this.total = habitacionSeleccionada ? habitacionSeleccionada.precio * Number(this.formReserva.value.dias) : 0;
+      this.total = habitacionSeleccionada.precio * Number(this.formReserva.value.dias);
     }
   }
 
-  agregarReserva() {
+  // Agregar una nueva reserva
+  async agregarReserva() {
     if (this.formReserva.valid) {
-      const nuevaReserva = {
+      const nuevaReserva: Reserva = {
         nombre: this.formReserva.value.nombre!,
-        edad: this.formReserva.value.edad!,
+        edad: Number(this.formReserva.value.edad!),
         email: this.formReserva.value.email!,
         telefono: this.formReserva.value.telefono!,
         habitacion: this.formReserva.value.habitacion!,
-        dias: this.formReserva.value.dias!,
+        dias: Number(this.formReserva.value.dias!),
         total: this.total
       };
 
-      if (this.reservaEditando !== null) {
-        // Si estamos editando una reserva, la actualizamos
-        this.reservas[this.reservaEditando] = nuevaReserva;
-        this.reservaEditando = null;  // Restablecer la variable de edición
+      if (this.reservaEditando) {
+        // Si estamos editando una reserva, la actualizamos en Firebase
+        nuevaReserva.id = this.reservaEditando.id;
+        await this.reservaService.modificarReserva(nuevaReserva);
+        this.reservaEditando = null;
       } else {
-        // Si no estamos editando, agregamos una nueva reserva
-        this.reservas.push(nuevaReserva);
+        // Si es una nueva reserva, la agregamos a Firebase
+        await this.reservaService.agregarReserva(nuevaReserva);
       }
+
+      await this.getReservas();
       this.resetForm();
     }
   }
 
-  editarReserva(reserva: any) {
+  // Editar una reserva
+  editarReserva(reserva: Reserva) {
     this.formReserva.setValue({
       nombre: reserva.nombre,
-      edad: reserva.edad,
+      edad: reserva.edad.toString(),
       email: reserva.email,
       telefono: reserva.telefono,
       habitacion: reserva.habitacion,
-      dias: reserva.dias
+      dias: reserva.dias.toString()
     });
+
     this.total = reserva.total;
-
-    // Guardamos el índice de la reserva que estamos editando
-    this.reservaEditando = this.reservas.indexOf(reserva);
+    this.reservaEditando = reserva;
   }
 
-  eliminarReserva(index: number) {
-    this.reservas.splice(index, 1);
+  async eliminarReserva(id: string) {
+    if (!id) {
+      console.error('Error: ID de la reserva no válido');
+      return;
+    }
+    await this.reservaService.eliminarReserva(id);
+    await this.getReservas();
   }
+  
 
+  // Reiniciar el formulario
   resetForm() {
     this.formReserva.reset();
     this.total = 0;

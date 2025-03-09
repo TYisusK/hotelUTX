@@ -1,3 +1,12 @@
+<select class="menu-select" onchange="location = this.value;">
+    <option value="" selected disabled>Menú</option>
+    <option value="https://ejemplo4formularioreact.netlify.app/">Inicio</option>
+    <option value="https://fundamentos-ejemmplo1.netlify.app/">Libros</option>
+    <option value="https://ejemplo2dados.netlify.app/">Productos</option>
+    <option value="https://ejemplo3productos.netlify.app/">Poyecto parcial 1</option>
+    <option value="https://ejemplo4formularioreact.netlify.app/">Acerca de</option>
+  
+  </select>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -70,7 +79,7 @@
                             .
                       
 
-                            <button (click)="eliminarReserva(i)">Eliminar</button>
+                            <button (click)="eliminarReserva(reserva.id || '')">Eliminar</button>
                         </td>
                     </tr>
                 </tbody>
